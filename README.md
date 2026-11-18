@@ -1,5 +1,4 @@
    #     :hibiscus:  Podemos Liberar Cuba y el Mundo :hibiscus:
-<img alt="Profile-Image" src="https://github.com/vinita2000/profile/blob/master/git-img/girlwithlaptop.png" width="400" height="400">
 
 <br/>
 <br/>
