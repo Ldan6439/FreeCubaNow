@@ -294,13 +294,33 @@
     margin:15px 0;
     font-size:.95rem;
   }
-  .info-max{
-    background:#d4edda;
+  .info-motivacional{
+    background:linear-gradient(135deg,#d4edda 0%,#c3e6cb 100%);
     border-left:4px solid #28a745;
-    padding:12px 18px;
-    border-radius:8px;
+    padding:15px 20px;
+    border-radius:10px;
     margin:15px 0;
+    font-size:1.05rem;
+    font-weight:500;
+    color:#155724;
+    text-align:center;
+  }
+  .info-motivacional strong{color:#0f3d1a;font-size:1.1rem}
+  .contador-visitas{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,.15);
+    padding:8px 18px;
+    border-radius:50px;
+    margin-top:12px;
     font-size:.95rem;
+    border:1px solid rgba(255,255,255,.25);
+  }
+  .contador-visitas .num-visitas{
+    font-weight:bold;
+    font-size:1.2rem;
+    color:#ffd700;
   }
   .toast{
     position:fixed;
@@ -385,12 +405,6 @@
         allowfullscreen>
       </iframe>
     </div>
-    <!-- 
-      Si aún no tienes el video, puedes comentar el iframe de arriba y descomentar esto:
-      <div class="video-placeholder">
-        <p>🎥 Próximamente: Video promocional de la campaña</p>
-      </div>
-    -->
   </div>
 
   <!-- DONACIÓN -->
@@ -398,8 +412,9 @@
     <h2>💚 Cómo donar en Bitcoin Cash (BCH)</h2>
     <p>Aceptamos donaciones en <strong>Bitcoin Cash (BCH)</strong>, una criptomoneda rápida, de comisiones mínimas y perfecta para transferencias internacionales sin intermediarios.</p>
     
-    <div class="info-max">
-      💡 <strong>Importante:</strong> Para garantizar que más personas puedan participar, el monto máximo por donación es de <strong>50 USD</strong>. ¡Cada aporte cuenta!
+    <div class="info-motivacional">
+      ✨ <strong>Sin límites de donación.</strong><br>
+      Con 1 USD que donemos todos, podemos salvar vidas. 🕊️
     </div>
 
     <div class="donacion-box">
@@ -439,14 +454,10 @@
   <div class="card" id="form-donar">
     <h2>✍️ Registra tu donación</h2>
     <p>Después de realizar tu aporte en BCH, completa este formulario. Al enviarlo, se abrirá <strong>WhatsApp</strong> con tus datos para que el administrador verifique tu donación en el blockchain y la confirme en el ranking público.</p>
-    
-    <div class="info-max">
-      📌 Recuerda: el monto máximo permitido por donación es <strong>50 USD</strong>.
-    </div>
 
     <form class="form-registro" onsubmit="enviarWhatsApp(event)">
       <input type="text" id="nombre" placeholder="Nombre o empresa" required maxlength="60">
-      <input type="number" id="monto" placeholder="Monto en USD (máx. 50)" min="1" max="50" step="0.01" required>
+      <input type="number" id="monto" placeholder="Monto en USD" min="0.01" step="0.01" required>
       <input type="text" id="txid" placeholder="TXID de la transacción (opcional)">
       <select id="tipo" required>
         <option value="">Tipo de donante</option>
@@ -488,30 +499,34 @@
 <footer>
   <p><strong>Nuestra Donación Libera un País</strong></p>
   <p>Campaña ciudadana internacional · Bitcoin Cash: <code>qz25dfmelxvtjz8esw27mrs2h4ahk2u8rspyzmjugm</code></p>
-  <p style="margin-top:10px;font-size:.9rem;opacity:.8">Hecho con ❤️ por la libertad de Cuba · 2026</p>
+  
+  <!-- CONTADOR DE VISITAS -->
+  <div class="contador-visitas">
+    👁️ Visitas: <span class="num-visitas" id="contador-visitas">—</span>
+  </div>
+  
+  <p style="margin-top:15px;font-size:.9rem;opacity:.8">Hecho con ❤️ por la libertad de Cuba · 2026</p>
 </footer>
 
 <div class="toast" id="toast">¡Dirección copiada!</div>
+
+<!-- GoatCounter: contador de visitas gratuito, sin cookies, respetuoso con la privacidad -->
+<script data-goatcounter="https://LIBERA-CUBA.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 
 <script>
   // ============================================
   // CONFIGURACIÓN PRIVADA DEL ADMINISTRADOR
   // ============================================
-  // Número de WhatsApp del administrador (NO se muestra públicamente en la página,
-  // solo se usa internamente para construir el enlace wa.me)
   const WHATSAPP_ADMIN = "5355599022"; // Código país + número, sin + ni espacios
 
   // ============================================
   // DONACIONES CONFIRMADAS
   // ============================================
   // ⚠️ SOLO EL ADMINISTRADOR debe editar este array.
-  // Cuando recibas una solicitud por WhatsApp y verifiques el TXID en el blockchain,
-  // agrega la donación aquí y actualiza el archivo en GitHub.
-  // El ranking y la tabla de transparencia se generan SOLO a partir de este array.
   const donacionesConfirmadas = [
-    // Ejemplo de formato (descomenta y edita para agregar donaciones reales):
+    // Ejemplo de formato:
     // {nombre:"Empresa Solidaria XYZ", monto:50, tipo:"empresa", fecha:"2026-11-15", txid:"abc123..."},
-    // {nombre:"María L.", monto:40, tipo:"persona", fecha:"2026-11-14", txid:"def456..."},
   ];
 
   function actualizarRanking(){
@@ -577,12 +592,6 @@
     const txid = document.getElementById('txid').value.trim() || 'No proporcionado';
     const tipo = document.getElementById('tipo').value;
 
-    // Validación monto máximo 50 USD
-    if(monto > 50){
-      alert('⚠️ El monto máximo por donación es 50 USD. Por favor ajusta tu cantidad.');
-      document.getElementById('monto').focus();
-      return;
-    }
     if(monto <= 0){
       alert('⚠️ El monto debe ser mayor a 0.');
       return;
@@ -635,8 +644,34 @@ Por favor, verifica esta donación en el blockchain y confírmala en el ranking 
     setTimeout(()=>t.classList.remove('show'),3500);
   }
 
+  // ============================================
+  // CONTADOR DE VISITAS (GoatCounter)
+  // ============================================
+  // Muestra el número de visitas obteniéndolo del endpoint JSON de GoatCounter.
+  // IMPORTANTE: reemplaza "LIBERA-CUBA" por el nombre real que elijas al registrarte.
+  function actualizarContadorVisitas(){
+    const cuentaGoatCounter = "LIBERA-CUBA"; // ⚠️ Reemplaza por tu cuenta
+    fetch(`https://${cuentaGoatCounter}.goatcounter.com/count`)
+      .then(()=>{
+        // El script de GoatCounter ya registró la visita.
+        // Para obtener el total, usamos el endpoint de stats (requiere configuración pública).
+        return fetch(`https://${cuentaGoatCounter}.goatcounter.com/api/v0/sites/${cuentaGoatCounter}/stats/hits`);
+      })
+      .then(r=>r.json())
+      .then(data=>{
+        if(data && typeof data.total !== 'undefined'){
+          document.getElementById('contador-visitas').textContent = data.total.toLocaleString('en-US');
+        }
+      })
+      .catch(()=>{
+        // Si falla, mostramos un fallback
+        document.getElementById('contador-visitas').textContent = "—";
+      });
+  }
+
   // Inicializar
   actualizarRanking();
+  actualizarContadorVisitas();
 </script>
 
 </body>
