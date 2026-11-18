@@ -145,6 +145,8 @@
   .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(207,20,43,.4)}
   .btn.secondary{background:var(--azul);box-shadow:0 4px 12px rgba(11,61,145,.3)}
   .btn.secondary:hover{box-shadow:0 6px 16px rgba(11,61,145,.4)}
+  .btn.whatsapp{background:#25D366;box-shadow:0 4px 12px rgba(37,211,102,.3)}
+  .btn.whatsapp:hover{box-shadow:0 6px 16px rgba(37,211,102,.4)}
   #qr{
     background:var(--blanco);
     padding:10px;
@@ -152,6 +154,12 @@
     display:inline-block;
     margin:15px 0;
     box-shadow:var(--sombra);
+  }
+  #qr img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    border-radius:8px;
   }
   details{
     background:var(--blanco);
@@ -192,6 +200,15 @@
   .ranking li.top3{border-left-color:#cd7f32;background:linear-gradient(90deg,#faebd7,var(--gris))}
   .ranking .pos{font-weight:bold;color:var(--azul);min-width:30px}
   .ranking .monto{font-weight:bold;color:var(--rojo)}
+  .ranking-vacio{
+    text-align:center;
+    padding:30px;
+    color:#666;
+    font-style:italic;
+    background:var(--gris);
+    border-radius:12px;
+    margin-top:15px;
+  }
   .transparencia-table{
     width:100%;
     border-collapse:collapse;
@@ -237,6 +254,30 @@
     border-color:var(--azul);
   }
   .full{grid-column:1/-1}
+  .video-container{
+    position:relative;
+    padding-bottom:56.25%;
+    height:0;
+    overflow:hidden;
+    border-radius:12px;
+    margin-top:15px;
+    box-shadow:var(--sombra);
+  }
+  .video-container iframe{
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    border:0;
+  }
+  .video-placeholder{
+    background:var(--gris);
+    border:2px dashed var(--azul);
+    border-radius:12px;
+    padding:40px 20px;
+    text-align:center;
+    color:#666;
+    margin-top:15px;
+  }
   footer{
     background:var(--azul);
     color:var(--blanco);
@@ -248,6 +289,14 @@
   .alerta{
     background:#fff3cd;
     border-left:4px solid #ffc107;
+    padding:12px 18px;
+    border-radius:8px;
+    margin:15px 0;
+    font-size:.95rem;
+  }
+  .info-max{
+    background:#d4edda;
+    border-left:4px solid #28a745;
     padding:12px 18px;
     border-radius:8px;
     margin:15px 0;
@@ -312,24 +361,54 @@
   <div class="card">
     <h2>Impacto de tu donación</h2>
     <div class="stats">
-      <div class="stat"><span class="num" id="stat-donaciones">0</span><span class="lbl">Donaciones registradas</span></div>
+      <div class="stat"><span class="num" id="stat-donaciones">0</span><span class="lbl">Donaciones confirmadas</span></div>
       <div class="stat"><span class="num" id="stat-total">0</span><span class="lbl">USD recaudados</span></div>
       <div class="stat"><span class="num" id="stat-pasajes">0</span><span class="lbl">Pasajes financiados</span></div>
       <div class="stat"><span class="num">~$600</span><span class="lbl">Costo promedio por pasaje</span></div>
     </div>
   </div>
 
+  <!-- VIDEO PROMOCIONAL -->
+  <div class="card">
+    <h2>🎬 Video promocional</h2>
+    <p>Conoce más sobre nuestra campaña en este video:</p>
+    <!-- 
+      INSTRUCCIONES: Reemplaza VIDEO_ID por el ID de tu video de YouTube.
+      Ejemplo: si tu URL es https://www.youtube.com/watch?v=abc123XYZ
+      entonces VIDEO_ID = abc123XYZ
+    -->
+    <div class="video-container">
+      <iframe 
+        src="https://www.youtube.com/embed/VIDEO_ID" 
+        title="Video promocional - Nuestra Donación Libera un País" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+    <!-- 
+      Si aún no tienes el video, puedes comentar el iframe de arriba y descomentar esto:
+      <div class="video-placeholder">
+        <p>🎥 Próximamente: Video promocional de la campaña</p>
+      </div>
+    -->
+  </div>
+
   <!-- DONACIÓN -->
   <div class="card">
     <h2>💚 Cómo donar en Bitcoin Cash (BCH)</h2>
     <p>Aceptamos donaciones en <strong>Bitcoin Cash (BCH)</strong>, una criptomoneda rápida, de comisiones mínimas y perfecta para transferencias internacionales sin intermediarios.</p>
+    
+    <div class="info-max">
+      💡 <strong>Importante:</strong> Para garantizar que más personas puedan participar, el monto máximo por donación es de <strong>50 USD</strong>. ¡Cada aporte cuenta!
+    </div>
+
     <div class="donacion-box">
       <p><strong>Envía tu aporte a esta dirección:</strong></p>
       <div class="bch-address" id="bchAddr" onclick="copiarDireccion()">
         qz25dfmelxvtjz8esw27mrs2h4ahk2u8rspyzmjugm
       </div>
       <div id="qr">
-        <img src="https://github.com/Ldan6439/FreeCubaNow/blob/dee17525884c0ad09f077be8b54e3a46dc2b6067/Qr%20BC.jpg">
+        <img src="Qr BC.jpg" alt="Código QR Bitcoin Cash" width="220" height="220">
       </div>
       <p style="font-size:.9rem;color:#666">Escanea el código con tu wallet BCH o copia la dirección.</p>
       <button class="btn" onclick="copiarDireccion()">📋 Copiar dirección</button>
@@ -343,37 +422,50 @@
   <!-- RANKING TOP 10 -->
   <div class="card">
     <h2>🏆 Ranking Top 10 de Donantes</h2>
-    <p>Reconocemos públicamente a las empresas y personas que más han aportado. Tu nombre o el de tu empresa puede estar aquí.</p>
+    <p>Reconocemos públicamente a las empresas y personas que más han aportado. Las donaciones se agregan al ranking <strong>únicamente después de ser confirmadas por el administrador</strong>, para garantizar la transparencia y verificación de cada aporte.</p>
     <details open>
       <summary>Ver ranking completo ▼</summary>
       <ul class="ranking" id="ranking-lista">
         <!-- Se llena dinámicamente -->
       </ul>
+      <div id="ranking-vacio" class="ranking-vacio" style="display:none;">
+        <p>🕊️ Aún no hay donaciones confirmadas en el ranking.</p>
+        <p style="font-size:.9rem;margin-top:8px;">¡Sé el primero en aparecer aquí! Registra tu donación abajo.</p>
+      </div>
     </details>
   </div>
 
-  <!-- REGISTRAR DONACIÓN -->
+  <!-- REGISTRAR DONACIÓN (envía a WhatsApp) -->
   <div class="card" id="form-donar">
     <h2>✍️ Registra tu donación</h2>
-    <p>Después de realizar tu aporte en BCH, regístralo aquí para que aparezca en el ranking y en la tabla de transparencia. Los datos se almacenan localmente en este navegador hasta su verificación en blockchain.</p>
-    <form class="form-registro" onsubmit="registrarDonacion(event)">
-      <input type="text" id="nombre" placeholder="Nombre o empresa" required>
-      <input type="number" id="monto" placeholder="Monto en USD" min="1" step="0.01" required>
-      <input type="text" id="txid" placeholder="TXID de la transacción (necesario para registro correcto)">
+    <p>Después de realizar tu aporte en BCH, completa este formulario. Al enviarlo, se abrirá <strong>WhatsApp</strong> con tus datos para que el administrador verifique tu donación en el blockchain y la confirme en el ranking público.</p>
+    
+    <div class="info-max">
+      📌 Recuerda: el monto máximo permitido por donación es <strong>50 USD</strong>.
+    </div>
+
+    <form class="form-registro" onsubmit="enviarWhatsApp(event)">
+      <input type="text" id="nombre" placeholder="Nombre o empresa" required maxlength="60">
+      <input type="number" id="monto" placeholder="Monto en USD (máx. 50)" min="1" max="50" step="0.01" required>
+      <input type="text" id="txid" placeholder="TXID de la transacción (opcional)">
       <select id="tipo" required>
         <option value="">Tipo de donante</option>
         <option value="empresa">Empresa</option>
         <option value="persona">Persona natural</option>
         <option value="anonimo">Anónimo</option>
       </select>
-      <button type="submit" class="btn full">Publicar mi donación</button>
+      <button type="submit" class="btn whatsapp full">📱 Enviar solicitud por WhatsApp</button>
     </form>
+    
+    <p style="margin-top:15px;font-size:.9rem;color:#666;text-align:center;">
+      🔒 Tus datos serán enviados de forma privada al administrador para su verificación.
+    </p>
   </div>
 
   <!-- TRANSPARENCIA -->
   <div class="card">
     <h2>🔍 Transparencia pública</h2>
-    <p>Todas las donaciones y su destino son públicos. Cada BCH recibido se convierte en pasajes aéreos comprados a nombre del profesional beneficiado, cuyos datos se publican con su consentimiento.</p>
+    <p>Todas las donaciones confirmadas y su destino son públicos. Cada BCH recibido se convierte en pasajes aéreos comprados a nombre del profesional beneficiado, cuyos datos se publican con su consentimiento.</p>
     <table class="transparencia-table">
       <thead>
         <tr>
@@ -402,96 +494,123 @@
 <div class="toast" id="toast">¡Dirección copiada!</div>
 
 <script>
-  // Datos iniciales de ejemplo (puedes reemplazarlos por donaciones reales)
-  const donacionesIniciales = [
-    {nombre:"Empresa Solidaria XYZ",monto:5000,tipo:"empresa",fecha:"2026-11-10",txid:"ejemplo1..."},
-    {nombre:"Fundación Libertad",monto:3200,tipo:"empresa",fecha:"2026-11-08",txid:"ejemplo2..."},
-    {nombre:"Carlos M.",monto:1500,tipo:"persona",fecha:"2026-11-05",txid:"ejemplo3..."},
-    {nombre:"Diáspora Cubana Inc.",monto:1200,tipo:"empresa",fecha:"2026-11-03",txid:"ejemplo4..."},
-    {nombre:"Anónimo",monto:800,tipo:"anonimo",fecha:"2026-11-01",txid:"ejemplo5..."},
-    {nombre:"María L.",monto:600,tipo:"persona",fecha:"2026-10-28",txid:"ejemplo6..."},
-    {nombre:"Tech Company ABC",monto:500,tipo:"empresa",fecha:"2026-10-25",txid:"ejemplo7..."},
-    {nombre:"Juan P.",monto:300,tipo:"persona",fecha:"2026-10-22",txid:"ejemplo8..."},
-    {nombre:"Colectivo Artesano",monto:250,tipo:"persona",fecha:"2026-10-20",txid:"ejemplo9..."},
-    {nombre:"Anónimo",monto:200,tipo:"anonimo",fecha:"2026-10-18",txid:"ejemplo10..."},
-    {nombre:"Pedro R.",monto:150,tipo:"persona",fecha:"2026-10-15",txid:"ejemplo11..."}
+  // ============================================
+  // CONFIGURACIÓN PRIVADA DEL ADMINISTRADOR
+  // ============================================
+  // Número de WhatsApp del administrador (NO se muestra públicamente en la página,
+  // solo se usa internamente para construir el enlace wa.me)
+  const WHATSAPP_ADMIN = "5355599022"; // Código país + número, sin + ni espacios
+
+  // ============================================
+  // DONACIONES CONFIRMADAS
+  // ============================================
+  // ⚠️ SOLO EL ADMINISTRADOR debe editar este array.
+  // Cuando recibas una solicitud por WhatsApp y verifiques el TXID en el blockchain,
+  // agrega la donación aquí y actualiza el archivo en GitHub.
+  // El ranking y la tabla de transparencia se generan SOLO a partir de este array.
+  const donacionesConfirmadas = [
+    // Ejemplo de formato (descomenta y edita para agregar donaciones reales):
+    // {nombre:"Empresa Solidaria XYZ", monto:50, tipo:"empresa", fecha:"2026-11-15", txid:"abc123..."},
+    // {nombre:"María L.", monto:40, tipo:"persona", fecha:"2026-11-14", txid:"def456..."},
   ];
 
-  // Cargar donaciones: iniciales + localStorage
-  function cargarDonaciones(){
-    let donaciones = JSON.parse(localStorage.getItem('donaciones') || 'null');
-    if(!donaciones){
-      donaciones = donacionesIniciales;
-      localStorage.setItem('donaciones',JSON.stringify(donaciones));
-    }
-    return donaciones;
-  }
-
-  function guardarDonaciones(d){
-    localStorage.setItem('donaciones',JSON.stringify(d));
-  }
-
   function actualizarRanking(){
-    const donaciones = cargarDonaciones();
+    const donaciones = [...donacionesConfirmadas];
     donaciones.sort((a,b)=>b.monto-a.monto);
     const top10 = donaciones.slice(0,10);
     const lista = document.getElementById('ranking-lista');
+    const vacio = document.getElementById('ranking-vacio');
     lista.innerHTML = '';
-    top10.forEach((d,i)=>{
-      const li = document.createElement('li');
-      if(i===0) li.className='top1';
-      else if(i===1) li.className='top2';
-      else if(i===2) li.className='top3';
-      const medalla = i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
-      const etiqueta = d.tipo==='empresa'?' 🏢':d.tipo==='anonimo'?' 🕶️':' 👤';
-      li.innerHTML = `
-        <span><span class="pos">${medalla}</span> ${d.nombre}${etiqueta}</span>
-        <span class="monto">$${d.monto.toLocaleString('en-US')}</span>
-      `;
-      lista.appendChild(li);
-    });
+
+    if(top10.length === 0){
+      vacio.style.display = 'block';
+    } else {
+      vacio.style.display = 'none';
+      top10.forEach((d,i)=>{
+        const li = document.createElement('li');
+        if(i===0) li.className='top1';
+        else if(i===1) li.className='top2';
+        else if(i===2) li.className='top3';
+        const medalla = i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+        const etiqueta = d.tipo==='empresa'?' 🏢':d.tipo==='anonimo'?' 🕶️':' 👤';
+        li.innerHTML = `
+          <span><span class="pos">${medalla}</span> ${d.nombre}${etiqueta}</span>
+          <span class="monto">$${d.monto.toLocaleString('en-US',{maximumFractionDigits:2})}</span>
+        `;
+        lista.appendChild(li);
+      });
+    }
 
     // Estadísticas
     const total = donaciones.reduce((s,d)=>s+Number(d.monto),0);
     document.getElementById('stat-donaciones').textContent = donaciones.length;
-    document.getElementById('stat-total').textContent = '$'+total.toLocaleString('en-US');
+    document.getElementById('stat-total').textContent = '$'+total.toLocaleString('en-US',{maximumFractionDigits:2});
     document.getElementById('stat-pasajes').textContent = Math.floor(total/600);
 
     // Tabla transparencia
     const tbody = document.getElementById('tabla-transparencia');
     tbody.innerHTML = '';
-    donaciones.slice(0,20).forEach(d=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${d.fecha}</td>
-        <td>${d.nombre}</td>
-        <td>$${Number(d.monto).toLocaleString('en-US')}</td>
-        <td style="font-family:monospace;font-size:.8rem">${d.txid||'-'}</td>
-        <td>Pasaje aéreo</td>
-      `;
-      tbody.appendChild(tr);
-    });
+    if(donaciones.length === 0){
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#666;font-style:italic">Aún no hay donaciones confirmadas públicamente.</td></tr>';
+    } else {
+      donaciones.forEach(d=>{
+        const tr = document.createElement('tr');
+        const txidLink = d.txid 
+          ? `<a href="https://blockchair.com/bitcoin-cash/transaction/${d.txid}" target="_blank" rel="noopener" style="font-family:monospace;font-size:.8rem;color:var(--azul)">${d.txid.substring(0,12)}...</a>`
+          : '-';
+        tr.innerHTML = `
+          <td>${d.fecha}</td>
+          <td>${d.nombre}</td>
+          <td>$${Number(d.monto).toLocaleString('en-US',{maximumFractionDigits:2})}</td>
+          <td>${txidLink}</td>
+          <td>Pasaje aéreo</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
   }
 
-  function registrarDonacion(e){
+  function enviarWhatsApp(e){
     e.preventDefault();
     const nombre = document.getElementById('nombre').value.trim();
     const monto = parseFloat(document.getElementById('monto').value);
-    const txid = document.getElementById('txid').value.trim();
+    const txid = document.getElementById('txid').value.trim() || 'No proporcionado';
     const tipo = document.getElementById('tipo').value;
-    if(!nombre||!monto||!tipo){alert('Completa todos los campos');return}
-    const donaciones = cargarDonaciones();
-    donaciones.push({
-      nombre,
-      monto,
-      txid,
-      tipo,
-      fecha:new Date().toISOString().split('T')[0]
-    });
-    guardarDonaciones(donaciones);
-    actualizarRanking();
+
+    // Validación monto máximo 50 USD
+    if(monto > 50){
+      alert('⚠️ El monto máximo por donación es 50 USD. Por favor ajusta tu cantidad.');
+      document.getElementById('monto').focus();
+      return;
+    }
+    if(monto <= 0){
+      alert('⚠️ El monto debe ser mayor a 0.');
+      return;
+    }
+    if(!nombre || !tipo){
+      alert('⚠️ Por favor completa todos los campos obligatorios.');
+      return;
+    }
+
+    const tipoTexto = tipo === 'empresa' ? 'Empresa' : tipo === 'anonimo' ? 'Anónimo' : 'Persona natural';
+    const fecha = new Date().toLocaleString('es-ES');
+
+    const mensaje = 
+`🕊️ *SOLICITUD DE DONACIÓN - Nuestra Donación Libera un País*
+
+👤 *Nombre/Empresa:* ${nombre}
+🏷️ *Tipo:* ${tipoTexto}
+💵 *Monto:* $${monto.toFixed(2)} USD
+🔗 *TXID:* ${txid}
+📅 *Fecha de envío:* ${fecha}
+
+Por favor, verifica esta donación en el blockchain y confírmala en el ranking público. ¡Gracias!`;
+
+    const url = `https://wa.me/${WHATSAPP_ADMIN}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+
+    mostrarToast('Abriendo WhatsApp... envía el mensaje para completar el registro');
     e.target.reset();
-    mostrarToast('¡Donación registrada! Gracias por liberar un país 🕊️');
   }
 
   function copiarDireccion(){
@@ -499,7 +618,6 @@
     navigator.clipboard.writeText(addr).then(()=>{
       mostrarToast('¡Dirección BCH copiada!');
     }).catch(()=>{
-      // Fallback
       const t = document.createElement('textarea');
       t.value = addr;
       document.body.appendChild(t);
@@ -514,7 +632,7 @@
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),3000);
+    setTimeout(()=>t.classList.remove('show'),3500);
   }
 
   // Inicializar
